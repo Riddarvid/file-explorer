@@ -1,22 +1,21 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
 
 public class FileExplorer {
-    private final static boolean DEBUGGING = false;
+    private final static boolean DEBUGGING = true;
 
     private Node currentFile;
     private final String rootPath;
+    private final Set<String> excludedPaths;
 
-    public FileExplorer(String rootPath) throws FileNotFoundException {
+    public FileExplorer(String rootPath, Set<String> excludedPaths) throws FileNotFoundException {
         File rootFile = new File(rootPath);
         if (!rootFile.exists()) {
             throw new FileNotFoundException();
         }
         this.rootPath = rootPath;
+        this.excludedPaths = excludedPaths;
         reload();
     }
 
@@ -28,7 +27,7 @@ public class FileExplorer {
         if (DEBUGGING) {
             System.out.println(file.getAbsolutePath());
         }
-        if (Application.excludedPaths.contains(file.getAbsolutePath())) {
+        if (excludedPaths.contains(file.getAbsolutePath())) {
             return new EFile("Excluded", parent, 0);
         }
         if (file.isFile()) {

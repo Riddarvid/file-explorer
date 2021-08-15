@@ -1,17 +1,22 @@
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 public class Application {
-    private final static String rootPath = "/";
-    public final static Set<String> excludedPaths = new HashSet<>();
+    public final Set<String> excludedPaths = new HashSet<>();
     private final Scanner scanner = new Scanner(System.in);
 
-    static {
-        excludedPaths.add("/home/riddarvid/.steam");
-        excludedPaths.add("/home/riddarvid/.local/share/Steam");
-        excludedPaths.add("/proc");
-        excludedPaths.add("/sys");
-        excludedPaths.add("/home");
+    public Application() {
+        try {
+            excludedPaths.addAll(Files.readAllLines(Path.of(this.getClass().getResource("Exclude.txt").toURI())));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
@@ -28,7 +33,7 @@ public class Application {
                 running = false;
             } else {
                 try {
-                    fileExplorer = new FileExplorer(input);
+                    fileExplorer = new FileExplorer(input, excludedPaths);
                     break;
                 } catch (FileNotFoundException e) {
                     System.out.println("That file does not exist.");
