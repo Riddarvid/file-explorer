@@ -1,3 +1,5 @@
+package explorer;
+
 public class EFile extends Node {
     public EFile(String name, Node parent, long size) {
         super(name, parent);

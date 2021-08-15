@@ -1,3 +1,5 @@
+package explorer;
+
 import java.util.List;
 
 public class EDirectory extends Node {

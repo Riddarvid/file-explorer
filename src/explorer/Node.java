@@ -1,3 +1,5 @@
+package explorer;
+
 public abstract class Node implements Comparable<Node> {
     private final static long SIZE_OF_KB = 1024;
     private final static long SIZE_OF_MB = 1024 * SIZE_OF_KB;
