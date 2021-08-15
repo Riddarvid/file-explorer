@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 import java.util.*;
 
 public class Application {
@@ -18,24 +19,31 @@ public class Application {
     }
 
     private void run() {
-        FileExplorer fileExplorer = new FileExplorer(rootPath);
-        label:
-        while (true) {
+        FileExplorer fileExplorer = null;
+        boolean running = true;
+        while (running) {
+            System.out.println("Please enter a root directory.");
+            String input = scanner.nextLine();
+            if (input.equals("q")) {
+                running = false;
+            } else {
+                try {
+                    fileExplorer = new FileExplorer(input);
+                    break;
+                } catch (FileNotFoundException e) {
+                    System.out.println("That file does not exist.");
+                }
+            }
+        }
+        while (running) {
             System.out.println();
             fileExplorer.printCurrentFile();
             String input = scanner.nextLine();
             switch (input) {
-                case "q":
-                    break label;
-                case "r":
-                    fileExplorer.reload();
-                    break;
-                case "..":
-                    fileExplorer.goUp();
-                    break;
-                default:
-                    fileExplorer.goTo(input);
-                    break;
+                case "q" -> running = false;
+                case "r" -> fileExplorer.reload();
+                case ".." -> fileExplorer.goUp();
+                default -> fileExplorer.goTo(input);
             }
         }
         System.out.println("Program terminated.");

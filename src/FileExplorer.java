@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -10,7 +11,11 @@ public class FileExplorer {
     private Node currentFile;
     private final String rootPath;
 
-    public FileExplorer(String rootPath) {
+    public FileExplorer(String rootPath) throws FileNotFoundException {
+        File rootFile = new File(rootPath);
+        if (!rootFile.exists()) {
+            throw new FileNotFoundException();
+        }
         this.rootPath = rootPath;
         reload();
     }
